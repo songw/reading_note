@@ -228,9 +228,171 @@ It's easy to "escape" characters with a leading \.
 ## 3 数据结构
 `Python` 提供了一些功能强大的数据结构，通过这些数据结构我们可以更加方便地处理对象的集合。这些数据结构包括列表、字典、元组和集合。
 ### 3.1 列表
+列表能够保存多个不同数据类型的对象。可以通过如下的方式创建一个列表：
+`[element1, element2, ...]`
+下面是两个列表，一个列表的元素为 `Excel` 文件的名字，另一个列表中的元素为一些数字。
+```python
+>>> file_names = ["a.xlsx", "b.xlsx", "c.xlsx"]
+>>> file_names
+['a.xlsx', 'b.xlsx', 'c.xlsx']
+>>> numbers = [1, 2, 3]
+>>> numbers
+[1, 2, 3]
+```
+像字符串一样，列表也支持使用`+`号进行拼接，示例代码如下：
+```python
+>>> file_names = ["a.xlsx", "b.xlsx", "c.xlsx"]
+>>> numbers = [1, 2, 3]
+>>> file_names + numbers
+['a.xlsx', 'b.xlsx', 'c.xlsx', 1, 2, 3]
+```
+上面的代码也说明了列表可以保存不同类型的对象。由于列表也是对象，因此列表也可以将其他列表作为自己的元素，这样的列表称为嵌套列表，示例代码如下：
+```python
+>>> nested_list = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+>>> nested_list
+[[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+```
+列表 `nested_list` 中的每个元素为一个列表。嵌套列表也可以通过索引或切片进行访问，示例代码如下：
+```python
+>>> nested_list = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+>>> nested_list[1][1]
+5
+>>> nested_list[1][1:]
+[5, 6]
+>>> nested_list[1]
+[4, 5, 6]
+```
+可以通过 `append()` 和 `insert()` 方法往列表中添加元素，示例代码如下：
+```python
+>>> users = ["Linda", "Brian"]
+>>> users.append("Jennifer")
+>>> users
+['Linda', 'Brian', 'Jennifer']
+>>> users.insert(0, "Kim")
+>>> users
+['Kim', 'Linda', 'Brian', 'Jennifer']
+```
+在使用 `insert()` 方法时，第一个参数为插入的位置，第二个参数为要插入的元素。从列表中删除一个元素可以使用 `pop()` 方法或者 `del` 语句，示例代码如下：
+```python
+>>> users = ['Kim', 'Linda', 'Brian', 'Jennifer']
+>>> users
+['Kim', 'Linda', 'Brian', 'Jennifer']
+>>> users.pop()
+'Jennifer'
+>>> users
+['Kim', 'Linda', 'Brian']
+>>> users.pop(1)
+'Linda'
+>>> users
+['Kim', 'Brian']
+>>> del users[1]
+>>> users
+['Kim']
+```
+`pop()` 方法默认删除并返回列表中的最后一个元素，也可以参数指定要删除那个元素；`del` 语句删除指定的元素。另外还有一些有用的针对列表的操作，示例代码如下：
+```python
+>>> # 使用 len() 方法获取列表的长度
+>>> users = ['Kim', 'Linda', 'Brian', 'Jennifer']
+>>> len(users)
+4
+```
 
+```python
+>>> # 判断列表中是否包含某个元素
+>>> users = ['Kim', 'Linda', 'Brian', 'Jennifer']
+>>> 'Linda' in users
+True
+```
+
+```python
+>>> # 对列表进行排序
+>>> users = ['Kim', 'Linda', 'Brian', 'Jennifer']
+>>> sorted(users) # 返回一个新的排序后的列表
+['Brian', 'Jennifer', 'Kim', 'Linda']
+>>> users # 原列表不发生改变
+['Kim', 'Linda', 'Brian', 'Jennifer']
+>>> users.sort() # 对原列表进行排序
+>>> users
+['Brian', 'Jennifer', 'Kim', 'Linda']
+```
 ### 3.2 字典
+字典将键映射到值，是键值对的集合。最简单的创建字典的方法如下：
+`{key1: value1, key2: value2, ...}`
+可以通过键访问字典中的元素，和列表的索引一样，使用的也是方括号`[]`，示例代码如下：
+```python
+>>> carDict = {
+... "brand": "Ford",
+... "model": "Mustang",
+... "year": 1964
+... }
+>>> carDict["brand"]
+'Ford'
+```
+除了访问字典中的元素之外，还可以修改字典中的值以及向字典中添加新的键值对，示例代码如下：
+```python
+>>> carDict = {
+... "brand": "Ford",
+... "model": "Mustang",
+... "year": 1964
+... }
+>>> carDict
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1964}
+>>> carDict["year"] = 1968 # 修改字典中的值
+>>> carDict
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1968}
+```
+
+```python
+>>> carDict = {
+... "brand": "Ford",
+... "model": "Mustang",
+... "year": 1964
+... }
+>>> carDict
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1964}
+>>> carDict["color"] = "red" # 向字典中添加新的元素
+>>> carDict
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'color': 'red'}
+
+```
+合并两个以上字典的最简单方法是取出字典中的元素并把它们放到一个新的字典中，取出字典中元素的方法是在字典前面使用`**`，如果第二个字典中的键和第一个字典有重复，则第一个字典中相应的键对应的值会被覆盖。示例代码如下：
+```python
+>>> carDict = {
+... "brand": "Ford",
+... "model": "Mustang",
+... "year": 1964
+... }
+>>> {**carDict, **{"color": "red", "type": "SUV"}}
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'color': 'red', 'type': 'SUV'}
+```
+Python 3.9 引入了管道符号，专用于字典的合并操作，使用管道符号，可以将上面的合并操作简化成如下形式：
+```python
+>>> carDict = {
+... "brand": "Ford",
+... "model": "Mustang",
+... "year": 1964
+... }
+>>> carDict | {"color": "red", "type": "SUV"}
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'color': 'red', 'type': 'SUV'}
+```
+在使用方括号 `[]` 访问字典中的元素时，当键不存在时，会报错；而使用 `get` 方法，当键不存在时，允许返回一个默认值，示例代码如下：
+```python
+>>> carDict = {
+... "brand": "Ford",
+... "model": "Mustang",
+... "year": 1964
+... }
+>>> carDict["color"]
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+    carDict["color"]
+KeyError: 'color'
+>>> carDict.get("color", "white")
+'white'
+```
+介绍完字典之后，接下来介绍元组，元组和列表类似，不过有一个很大的不同，我们接下来介绍。
 ### 3.3 元组
+元组和列表类似，所不同的是元组不可改变，一旦创建，元组中的元素是不可改变的。
 ### 3.4 集合
 ## 4 控制流
 ### 4.1 代码块和pass语句
