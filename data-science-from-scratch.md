@@ -320,81 +320,130 @@ True
 `{key1: value1, key2: value2, ...}`
 可以通过键访问字典中的元素，和列表的索引一样，使用的也是方括号`[]`，示例代码如下：
 ```python
->>> carDict = {
+>>> car_dict = {
 ... "brand": "Ford",
 ... "model": "Mustang",
 ... "year": 1964
 ... }
->>> carDict["brand"]
+>>> car_dict["brand"]
 'Ford'
 ```
 除了访问字典中的元素之外，还可以修改字典中的值以及向字典中添加新的键值对，示例代码如下：
 ```python
->>> carDict = {
+>>> car_dict = {
 ... "brand": "Ford",
 ... "model": "Mustang",
 ... "year": 1964
 ... }
->>> carDict
+>>> car_dict
 {'brand': 'Ford', 'model': 'Mustang', 'year': 1964}
->>> carDict["year"] = 1968 # 修改字典中的值
->>> carDict
+>>> car_dict["year"] = 1968 # 修改字典中的值
+>>> car_dict
 {'brand': 'Ford', 'model': 'Mustang', 'year': 1968}
 ```
 
 ```python
->>> carDict = {
+>>> car_dict = {
 ... "brand": "Ford",
 ... "model": "Mustang",
 ... "year": 1964
 ... }
->>> carDict
+>>> car_dict
 {'brand': 'Ford', 'model': 'Mustang', 'year': 1964}
->>> carDict["color"] = "red" # 向字典中添加新的元素
->>> carDict
+>>> car_dict["color"] = "red" # 向字典中添加新的元素
+>>> car_dict
 {'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'color': 'red'}
 
 ```
 合并两个以上字典的最简单方法是取出字典中的元素并把它们放到一个新的字典中，取出字典中元素的方法是在字典前面使用`**`，如果第二个字典中的键和第一个字典有重复，则第一个字典中相应的键对应的值会被覆盖。示例代码如下：
 ```python
->>> carDict = {
+>>> car_dict = {
 ... "brand": "Ford",
 ... "model": "Mustang",
 ... "year": 1964
 ... }
->>> {**carDict, **{"color": "red", "type": "SUV"}}
+>>> {**car_dict, **{"color": "red", "type": "SUV"}}
 {'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'color': 'red', 'type': 'SUV'}
 ```
 Python 3.9 引入了管道符号，专用于字典的合并操作，使用管道符号，可以将上面的合并操作简化成如下形式：
 ```python
->>> carDict = {
+>>> car_dict = {
 ... "brand": "Ford",
 ... "model": "Mustang",
 ... "year": 1964
 ... }
->>> carDict | {"color": "red", "type": "SUV"}
+>>> car_dict | {"color": "red", "type": "SUV"}
 {'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'color': 'red', 'type': 'SUV'}
 ```
 在使用方括号 `[]` 访问字典中的元素时，当键不存在时，会报错；而使用 `get` 方法，当键不存在时，允许返回一个默认值，示例代码如下：
 ```python
->>> carDict = {
+>>> car_dict = {
 ... "brand": "Ford",
 ... "model": "Mustang",
 ... "year": 1964
 ... }
->>> carDict["color"]
+>>> car_dict["color"]
 Traceback (most recent call last):
   File "<input>", line 1, in <module>
-    carDict["color"]
+    car_dict["color"]
 KeyError: 'color'
->>> carDict.get("color", "white")
+>>> car_dict.get("color", "white")
 'white'
 ```
 介绍完字典之后，接下来介绍元组，元组和列表类似，不过有一个很大的不同，我们接下来介绍。
 ### 3.3 元组
-元组和列表类似，所不同的是元组不可改变，一旦创建，元组中的元素是不可改变的。
+元组和列表类似，所不同的是元组不可改变，一旦创建，元组中的元素是不可改变的。在某些情况下，元组和列表可以交换着使用，但是对于在整个程序执行过程中都不改变的集合来说，元组是最佳选择。在定义元组时，元素之间使用逗号分隔。创建语法如下：
+`my_tuple = elem1, elem2, ...`
+通常情况下会用括号将元素括起来，这样更容易阅读。例如：
+```python
+>>> fruit_tuple = ("apple", "pear", "banana")
+>>> fruit_tuple
+('apple', 'pear', 'banana')
+```
+我们可以使用和访问列表元素同样的方法来访问元组中的元素，不同的是不能改变元组中的元素。示例代码如下：
+```python
+>>> fruit_tuple = ("apple", "pear", "banana")
+>>> fruit_tuple
+('apple', 'pear', 'banana')
+>>> fruit_tuple[2]
+'banana'
+>>> fruit_tuple[0:2]
+('apple', 'pear')
+```
+拼接两个元组会生成一个新的元组，示例代码如下：
+```python
+>>> fruit_tuple = ("apple", "pear", "banana")
+>>> fruit_tuple
+('apple', 'pear', 'banana')
+>>> fruit_tuple_add = ("orange", "grape")
+>>> fruit_tuple_add
+('orange', 'grape')
+>>> fruit_tuple + fruit_tuple_add
+('apple', 'pear', 'banana', 'orange', 'grape')
+```
+
 ### 3.4 集合
+集合是不包含重复元素的集合，可以用来做一些集合运算或者去除列表、元组中重复的元素。创建语法如下：
+`my_set = {elem1, elem2, ...}`
+用花括号括起来以逗号分隔的元素。为了去除元组中的重复元素，可以使用集合的构造函数，示例代码如下：
+```python
+>>> my_tuple = ("apple", "pear", "orange", "apple", "orange")
+>>> my_tuple
+('apple', 'pear', 'orange', 'apple', 'orange')
+>>> set(my_tuple)
+{'pear', 'apple', 'orange'}
+```
+另外，可以进行一些集合的运算，例如：交集、并集等。示例代码如下：
+```python
+>>> my_set1 = {"apple", "pear", "orange"}
+>>> my_set2 = {"apple", "grape"}
+>>> my_set1.union(my_set2)
+{'apple', 'grape', 'pear', 'orange'}
+>>> my_set1.intersection(my_set2)
+{'apple'}
+```
 ## 4 控制流
+
 ### 4.1 代码块和pass语句
 ### 4.2 if语句和条件表达式
 ### 4.3 for和while循环
