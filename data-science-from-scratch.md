@@ -1219,10 +1219,572 @@ plt.show()
 + 通过观察散点图得出的变量之间的相关性并不等同于确定的因果关系。
 
 ## 6. 饼图
-## 7. 热力图
-## 8. 堆叠条形图
-## 9. 子图
+饼图，或称饼状图，是一个将圆形划分为几个扇形的统计图表。在饼图中，每个扇形的弧长大小，表示该种类占总体的比例，这些扇形合在一起刚好是一个完整的圆形。
 
+饼图最显著的功能在于表现”占比“。习惯上，人们也用饼图来比较扇形的大小，从而获得对数据的认知。但是，由于人类对“角度”的感知力并不如“长度”，在需要准确的表达数值（尤其是当数值接近、或数值很多）时，饼图常常不能胜任，建议用柱状图代替。
+
+使用时，须确认各个扇形的数据加起来等于 100%；避免扇区超过 5 个，尽量让图表简洁明了。
+
+下面通过具体的示例介绍饼图的绘制，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+
+
+languages = ['JavaScript', 'HTML/CSS', 'SQL', 'Python', 'Java']
+popularity = [59219, 55466, 47544, 36443, 35917]
+
+plt.pie(popularity)
+
+plt.show()
+```
+
+在上面的代码中，我们只要将一个列表传入到 `pie()` 函数中，便可以绘制一个饼图。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427154431.png]]
+
+从上面的饼图中我们不知道每个扇形所代表的数据，下面来为每个扇形打上标签。
+
+```python
+import matplotlib.pyplot as plt
+
+
+languages = ['JavaScript', 'HTML/CSS', 'SQL', 'Python', 'Java']
+popularity = [59219, 55466, 47544, 36443, 35917]
+
+plt.pie(popularity, labels=languages)
+
+plt.show()
+```
+
+为了给每个扇形打上标签，我们只需要传入参数 `labels` 即可。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427154556.png]]
+
+除了给每个扇形打上标签之外，我们还可以把每个扇形的占比标在图形上，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+
+
+languages = ['JavaScript', 'HTML/CSS', 'SQL', 'Python', 'Java']
+popularity = [59219, 55466, 47544, 36443, 35917]
+
+plt.pie(popularity, labels=languages, autopct='%1.1f%%')
+
+plt.show()
+```
+
+上面的代码中，我们通过参数 autopct 为每个扇形标上占比。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427154715.png]]
+
+上图中扇形从大到小排列的方向是逆时针的，一般情况下，我们比较习惯顺时针的方向，下面我们通过参数来设置成顺时针方向，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+
+
+languages = ['JavaScript', 'HTML/CSS', 'SQL', 'Python', 'Java']
+popularity = [59219, 55466, 47544, 36443, 35917]
+
+plt.pie(popularity, labels=languages, autopct='%1.1f%%', counterclock=False, startangle=90)
+
+plt.title('top5 编程语言占比')
+plt.show()
+```
+
+上面代码中，通过设置参数 `counterclock` 为 `False`，使得方向改为顺时针方向，通过设置参数 `startangle` 为 90，将最大扇形放在 12 点钟方向。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427154837.png]]
+
+有时候，为了强调某一个扇形，我们会让这个扇形脱离整个圆形，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+
+
+languages = ['JavaScript', 'HTML/CSS', 'SQL', 'Python', 'Java']
+popularity = [59219, 55466, 47544, 36443, 35917]
+
+plt.pie(popularity, labels=languages, autopct='%1.1f%%', 
+        counterclock=False, startangle=90,explode=[0,0,0.1,0,0])
+
+plt.title('top5 编程语言占比')
+plt.show()
+```
+
+在上面的代码中，我们通过设置参数 `explode` 来强调 `SQL` 这个扇形，要强调那个扇形，就把相应的值设置成非 0。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427154957.png]]
+
+以上便是饼图的绘制方法。
+饼图的适用场景：
++ 想要突出表示某个部分在整体中所占比例，尤其该部分所占比例达到总体的25%或50%时。
++ 分类数量最好小于5个。
++ 各不同分类间的占比差异明显。
++ 需要确定的图表绘制空间大小（不会随着分类增多有增大画布空间）。
+
+饼图的不适用场景：
++ 如果变量之间相互独立，并不构成一个整体，那么不可以使用饼图。
++ 饼图不能用来表现趋势。
++ 由于饼图用面积取代了长度，从而加大了对各个数据进行比较的难度。因此，当需要对数据进行比较，分清孰大孰小，尤其是当数据接近时，条形图更加合适。
++ 当类别过多时，不建议使用饼图，否则阅读将会很差。
+
+## 7. 热力图
+热力图是一种通过对色块着色来显示数据的统计图表。绘图时，需指定颜色映射的规则。例如，较大的值由较深的颜色表示，较小的值由较浅的颜色表示；较大的值由偏暖的颜色表示，较小的值由较冷的颜色表示，等等。
+
+从数据结构来划分，热力图一般分为两种。第一，表格型热力图，也称色块图。它需要 2 个分类字段和 1 个数值字段，分类字段确定 x、y 轴，将图表划分为规整的矩形块。数值字段决定了矩形块的颜色。第二，非表格型热力图，或曰平滑的热力图，它需要 3 个数值字段，可绘制在平行坐标系中（2个数值字段分别确定x、y轴，1个数值字段确定着色）。
+
+热力图适合用于查看总体的情况、发现异常值、显示多个变量之间的差异，以及检测它们之间是否存在任何相关性。
+
+下面通过具体的示例介绍热力图的绘制，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+harvest = np.array([[0.8, 2.4, 2.5, 3.9, 0.0, 4.0, 0.0],
+                    [2.4, 0.0, 4.0, 1.0, 2.7, 0.0, 0.0],
+                    [1.1, 2.4, 0.8, 4.3, 1.9, 4.4, 0.0],
+                    [0.6, 0.0, 0.3, 0.0, 3.1, 0.0, 0.0],
+                    [0.7, 1.7, 0.6, 2.6, 2.2, 6.2, 0.0],
+                    [1.3, 1.2, 0.0, 0.0, 0.0, 3.2, 5.1],
+                    [0.1, 2.0, 0.0, 1.4, 0.0, 1.9, 6.3]])
+
+plt.imshow(harvest)
+plt.show()
+```
+
+在上面的代码中，将一个二维数组传入到 `imshow()` 方法中便可以绘制一个热力图，每个色块的颜色代表数据的大小。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427164408.png]]
+
+上面只是绘制了色块，并没有指明 `x` 轴 和 `y` 轴代表的含义，下面我们加上 `x` 轴和 `y` 轴的标签，并加上标题，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+vegetables = ["cucumber", "tomato", "lettuce", "asparagus",
+              "potato", "wheat", "barley"]
+farmers = ["Farmer Joe", "Upland Bros.", "Smith Gardening",
+           "Agrifun", "Organiculture", "BioGoods Ltd.", "Cornylee Corp."]
+
+harvest = np.array([[0.8, 2.4, 2.5, 3.9, 0.0, 4.0, 0.0],
+                    [2.4, 0.0, 4.0, 1.0, 2.7, 0.0, 0.0],
+                    [1.1, 2.4, 0.8, 4.3, 1.9, 4.4, 0.0],
+                    [0.6, 0.0, 0.3, 0.0, 3.1, 0.0, 0.0],
+                    [0.7, 1.7, 0.6, 2.6, 2.2, 6.2, 0.0],
+                    [1.3, 1.2, 0.0, 0.0, 0.0, 3.2, 5.1],
+                    [0.1, 2.0, 0.0, 1.4, 0.0, 1.9, 6.3]])
+
+plt.xticks(np.arange(len(farmers)), labels=farmers, 
+                     rotation=45, rotation_mode="anchor", ha="right")
+plt.yticks(np.arange(len(vegetables)), labels=vegetables)    
+
+plt.title("Harvest of local farmers (in tons/year)")
+
+plt.imshow(harvest)
+plt.tight_layout()
+plt.show()
+```
+
+上面代码中，`x` 轴代表农场主的姓名，`y` 轴代表蔬菜的名称，二维数组中的数据代表某个农场主种的某类蔬菜的产量。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427164718.png]]
+
+上图中，我们加上了 `x` 轴和 `y` 轴代表的含义以及整个图的标题，但是现在我们还不知道不同色块所对应的数值的大小，下面我们就来加上。
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+vegetables = ["cucumber", "tomato", "lettuce", "asparagus",
+              "potato", "wheat", "barley"]
+farmers = ["Farmer Joe", "Upland Bros.", "Smith Gardening",
+           "Agrifun", "Organiculture", "BioGoods Ltd.", "Cornylee Corp."]
+
+harvest = np.array([[0.8, 2.4, 2.5, 3.9, 0.0, 4.0, 0.0],
+                    [2.4, 0.0, 4.0, 1.0, 2.7, 0.0, 0.0],
+                    [1.1, 2.4, 0.8, 4.3, 1.9, 4.4, 0.0],
+                    [0.6, 0.0, 0.3, 0.0, 3.1, 0.0, 0.0],
+                    [0.7, 1.7, 0.6, 2.6, 2.2, 6.2, 0.0],
+                    [1.3, 1.2, 0.0, 0.0, 0.0, 3.2, 5.1],
+                    [0.1, 2.0, 0.0, 1.4, 0.0, 1.9, 6.3]])
+
+plt.xticks(np.arange(len(farmers)), labels=farmers, 
+                     rotation=45, rotation_mode="anchor", ha="right")
+plt.yticks(np.arange(len(vegetables)), labels=vegetables)    
+plt.title("Harvest of local farmers (in tons/year)")
+
+plt.imshow(harvest)
+plt.colorbar()
+plt.tight_layout()
+plt.show()
+```
+
+上面的代码中，我们通过调用 `colorbar()` 函数来加上数值和颜色的对应规则。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427170030.png]]
+
+上图我们便加上了颜色和数值的对应规则。接下来我们再为每个色块加上所代表的数值，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+vegetables = ["cucumber", "tomato", "lettuce", "asparagus",
+              "potato", "wheat", "barley"]
+farmers = ["Farmer Joe", "Upland Bros.", "Smith Gardening",
+           "Agrifun", "Organiculture", "BioGoods Ltd.", "Cornylee Corp."]
+
+harvest = np.array([[0.8, 2.4, 2.5, 3.9, 0.0, 4.0, 0.0],
+                    [2.4, 0.0, 4.0, 1.0, 2.7, 0.0, 0.0],
+                    [1.1, 2.4, 0.8, 4.3, 1.9, 4.4, 0.0],
+                    [0.6, 0.0, 0.3, 0.0, 3.1, 0.0, 0.0],
+                    [0.7, 1.7, 0.6, 2.6, 2.2, 6.2, 0.0],
+                    [1.3, 1.2, 0.0, 0.0, 0.0, 3.2, 5.1],
+                    [0.1, 2.0, 0.0, 1.4, 0.0, 1.9, 6.3]])
+
+plt.xticks(np.arange(len(farmers)), labels=farmers, 
+                     rotation=45, rotation_mode="anchor", ha="right")
+plt.yticks(np.arange(len(vegetables)), labels=vegetables)    
+plt.title("Harvest of local farmers (in tons/year)")
+
+for i in range(len(vegetables)):
+    for j in range(len(farmers)):
+        text = plt.text(j, i, harvest[i, j], ha="center", va="center", color="w")
+
+plt.imshow(harvest)
+plt.colorbar()
+plt.tight_layout()
+plt.show()
+```
+
+上面的代码中，我们通过一个循环来为每个色块加上对应的数值。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427170128.png]]
+
+以上便是热力图的绘制方法。
+
+热力图的适用场景为：
++ 热力图的优势在于“空间利用率高”，可以容纳较为庞大的数据。热力图不仅有助于发现数据间的关系、找出极值，也常用于刻画数据的整体样貌，方便在数据集之间进行比较（例如将每个运动员的历年成绩都浓缩成一张热力图，再进行比较）。
++ 如果将某行或某列设置为时间变量，热力图也可用于展示数据随时间的变化。例如，用热力图来反映一个城市一年中的温度变化，气候的冷暖走向，一目了然。
+
+热力图的不适用场景为：
++ 尽管热力图能够容纳较多的数据，但反过来说，人们很难将其中的色块转换为精确的数字。因此，当需要清楚知道数值的时候，可能需要额外的标注。
+
+## 8. 堆叠条形图
+堆叠条形图是一种用来分解整体、比较各部分的图。与条形图类似，堆叠条形图常被用于比较不同类别的数值。而且，它的每一类数值内部，又被划分为多个子类别，这些子类别一般用不同的颜色来表示。
+
+如果说条形图可以帮助我们观察总量，那么堆叠条形图则可以同时反映总量与结构，即总量是多少？它又是由哪些部分构成的？进而，我们还可以探究哪一部分比例最大，以及每一部分的变动情况等等。
+
+下面通过具体的示例介绍堆叠条形图的绘制，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+x = ['A', 'B', 'C', 'D']
+y1 = np.array([10, 20, 10, 30])
+y2 = np.array([20, 25, 15, 25])
+y3 = np.array([12, 15, 19, 6])
+y4 = np.array([10, 29, 13, 19])
+  
+plt.bar(x, y1, label='Round1', width=0.67)
+plt.bar(x, y2, bottom=y1, label='Round2', width=0.67)
+plt.bar(x, y3, bottom=y1+y2, label='Round3', width=0.67)
+plt.bar(x, y4, bottom=y1+y2+y3, label='Round4', width=0.67)
+
+plt.xlabel("Teams")
+plt.ylabel("Score")
+plt.legend()
+plt.title("Scores by Teams in 4 Rounds")
+
+plt.tight_layout()
+plt.show()
+```
+
+在上面的代码中，列表 `x` 代表 4 只队伍，列表 `y1、y2、y3` 和 `y4` 分别表示 4 只队伍在 4 局比赛的得分。在进行图形绘制时，在绘制 `y2` 数据时，设置 `bottom = y1`，意思是在 `y1` 数据绘制的条形图的基础进行绘制，也就是形成堆叠图。代码执行完得到的图形如下所示：
+
+![[Pasted image 20220427170751.png]]
+
+在上图中，y1 列表对应的条形图在最底部，y2 列表对应的条形图位于 y1 列表对应条形图的上面，后面以此类推。上面的堆叠条形图是垂直方向的，和前面的条形图一样，我们同样的可以绘制水平方向的堆叠条形图，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+  
+x = ['A', 'B', 'C', 'D']
+y1 = np.array([10, 20, 10, 30])
+y2 = np.array([20, 25, 15, 25])
+y3 = np.array([12, 15, 19, 6])
+y4 = np.array([10, 29, 13, 19])
+  
+plt.barh(x, y1, label='Round1', height=0.67)
+plt.barh(x, y2, left=y1, label='Round2', height=0.67)
+plt.barh(x, y3, left=y1+y2, label='Round3', height=0.67)
+plt.barh(x, y4, left=y1+y2+y3, label='Round4', height=0.67)
+
+plt.xlabel("Score")
+plt.ylabel("Teams")
+plt.legend()
+plt.title("Scores by Teams in 4 Rounds")
+
+plt.tight_layout()
+plt.show()
+```
+
+在绘制水平方向的堆叠条形图时，需要将参数 `bottom` 改为 `left`，将参数 `width` 改为 `height`，需要将 `x` 轴标签改为 `Score`，`y` 轴标签改为 `Teams`。其他的和垂直方向的堆叠条形图的绘制类似。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427171018.png]]
+
+以上便是堆叠条形图的绘制。
+
+堆叠条形图的适用场景：
+对比不同类别数据的数值大小，同时对比每一类别数据中，子类别的构成及大小。
+
+堆叠条形图的不适用场景：
++ 对于堆叠柱状图来说，很多色块不处于同一水平线上，因此难以比较。所以，如果需要清楚的比较数值，建议采用分组柱状图，让每一根柱子的高度都显而易见。
++ 当堆叠的类型过多，很容易让人眼花缭乱。
+## 9. 子图
+前面讲述的图表绘制方法一次只会绘制一张图表，但是有些情况下，我们希望把一组图放在一起进行比较，有没有什么好的方法呢？`matplotlib` 中提供的 `subplots()` 可以很好的解决这个问题。通过调用 `subplots()` 可以将整个绘图区域分成 m * n 个子区域，每个子区域都可以绘制一个子图。
+
+当 m = 1，n = 2 时，绘图区域的划分情况如下所示：
+
+![[Pasted image 20220427171802.png]]
+
+当 m = 2，n = 1 时，绘图区域的划分情况如下所示：
+
+![[Pasted image 20220427171836.png]]
+
+当 m = 2，n = 2 时，绘图区域的划分情况如下所示：
+
+![[Pasted image 20220427171857.png]]
+
+下面就通过例子来看 `subplots()` 的使用，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 400)
+y = np.sin(x)
+
+fig, ax = plt.subplots()
+ax.plot(x, y)
+ax.set_title('plot sin')
+
+plt.show()
+```
+
+在上面的代码中，调用 `subplots()`` 函数时，没有传入参数，这样在默认情况下整个绘图区域只会包含一个子区域。`subplots()`` 函数会返回两个值，一个是 fig，一个是 ax。接下来便可以使用 ax 对子图进行绘制。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427172244.png]]
+
+上面的绘制只包含一个图形，下面来看包含多个子图的绘制，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 400)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+fig, ax = plt.subplots(nrows=2, ncols=1)
+
+ax[0].plot(x, y1)
+ax[0].set_title('plot sin')
+
+ax[1].plot(x, y2)
+ax[1].set_title('plot cos')
+
+plt.show()
+```
+
+上面代码中，向 `subplots()` 函数传入参数 nrows 和 ncols，值分别为 2 和 1。这样整个绘图区域会被划分为两个子区域。返回值 ax 为包含两个子区域对象的数组，我们可以使用索引的方式来访问每个对象，下面便可以使用这两个对象进行绘图。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427172452.png]]
+
+由于两个子图的横坐标相同，这样可以让两个子图共享横坐标，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 400)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+
+fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True)
+
+ax[0].plot(x, y1)
+ax[0].set_title('plot sin')
+
+ax[1].plot(x, y2)
+ax[1].set_title('plot cos')
+
+plt.show()
+```
+
+为了让两个子图共享横坐标，只需要在调用 subplots() 函数时传入参数 sharex，并设置其值为 True。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427172623.png]]
+
+上面两个子图是上下排列，我们再来看看左右排列的情况，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 400)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+
+fig, ax = plt.subplots(nrows=1, ncols=2)
+
+ax[0].plot(x, y1)
+ax[0].set_title('plot sin')
+
+ax[1].plot(x, y2)
+ax[1].set_title('plot cos')
+
+plt.show()
+```
+
+为了让两个子图左右排列，只需要将参数 nrows 和 ncols 的值分别设置为 1 和 2。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427172728.png]]
+
+上面图形中的子图长和宽不是很协调，下面我们通过参数来调整图形的长和宽的比例，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 400)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(18,5))
+
+ax[0].plot(x, y1)
+ax[0].set_title('plot sin')
+
+ax[1].plot(x, y2)
+ax[1].set_title('plot cos')
+
+plt.show()
+```
+
+上面的代码中，在调用 `subplots()` 函数时，传入参数 figsize 来设置图形的长和宽。代码执行后得到的图形如下图所示：
+
+![[Pasted image 20220427172841.png]]
+
+上面图形中，两个子图左右排列而且纵坐标轴相同，这样我们可以设置让两个子图共享纵坐标轴，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 400)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(18,5), sharey=True)
+
+ax[0].plot(x, y1)
+ax[0].set_title('plot sin')
+
+ax[1].plot(x, y2)
+ax[1].set_title('plot cos')
+
+plt.show()
+```
+
+为了让两个子图共享纵坐标轴，只需要向 `subplots()` 函数传入 sharey 参数，并设置其值为 True，代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427172943.png]]
+
+上面的例子中，调用 `subplots()` 函数返回的是一维数组，下面我们来看一个返回多维数组的例子：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+x1 = np.linspace(0, 2*np.pi, 400)
+y1 = np.sin(x1)
+y2 = np.cos(x1)
+
+x2 = np.linspace(0, 2*np.pi, 40)
+y3 = np.sin(x2)
+y4 = np.cos(x2)
+
+fig, ax = plt.subplots(nrows=2, ncols=2)
+
+ax[0,0].plot(x1, y1)
+ax[0,0].set_title('plot sin')
+
+ax[0,1].plot(x1, y2)
+ax[0,1].set_title('plot cos')
+
+ax[1,0].scatter(x2, y3)
+ax[1,0].set_title('plot scatter sin')
+
+ax[1,1].scatter(x2, y4)
+ax[1,1].set_title('plot scatter cos')
+
+plt.show()
+```
+
+在上面的代码中，ax 是一个 2 * 2 的数组，所以在进行索引的时候，需要使用二维数组的索引方法。代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427173056.png]]
+
+上面四个图，左右可以共享 y 轴的坐标，上下可以共享 x 轴的坐标，下面我们来设置共享坐标轴，代码如下：
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+x1 = np.linspace(0, 2*np.pi, 400)
+y1 = np.sin(x1)
+y2 = np.cos(x1)
+
+x2 = np.linspace(0, 2*np.pi, 40)
+y3 = np.sin(x2)
+y4 = np.cos(x2)
+
+fig, ax = plt.subplots(nrows=2, ncols=2, sharex=True, sharey=True)
+
+ax[0,0].plot(x1, y1)
+ax[0,0].set_title('plot sin')
+
+ax[0,1].plot(x1, y2)
+ax[0,1].set_title('plot cos')
+
+ax[1,0].scatter(x2, y3)
+ax[1,0].set_title('plot scatter sin')
+
+ax[1,1].scatter(x2, y4)
+ax[1,1].set_title('plot scatter cos')
+
+plt.show()
+```
+
+代码执行后得到的图形如下所示：
+
+![[Pasted image 20220427173155.png]]
+
+以上便是多个子图绘制的介绍。
 
 # 第四章 线性代数
 # 第五章 统计
