@@ -1796,14 +1796,23 @@ plt.show()
 ## 6. 逆和转置
 # 第五章 统计
 [https://www.analyticsvidhya.com/blog/2021/04/statistics-and-probability-concepts-for-data-science/](https://www.analyticsvidhya.com/blog/2021/04/statistics-and-probability-concepts-for-data-science/)
-## 1. 平均数
-$$A=\frac{1}{n}\sum_{i=1}^na_i$$
 
-## 2. 中位数
-## 3. 众数
-## 4. 方差
-## 5. 标准差
+[https://derangedphysiology.com/main/cicm-primary-exam/required-reading/research-methods-and-statistics/Chapter%203.0.2/variability-dispersion-and-central-tendency](https://derangedphysiology.com/main/cicm-primary-exam/required-reading/research-methods-and-statistics/Chapter%203.0.2/variability-dispersion-and-central-tendency)
+## 1. 集中趋势
+### 1.1 平均数
+$$A=\frac{1}{n}\sum_{i=1}^na_i$$
+### 1.2 中位数
+### 1.3 众数
+## 2. 分散趋势
+### 2.1 范围
+### 2.2 方差
+### 2.3 标准差
+### 2.4 百分位数
+## 3. 协方差
+### 3.1 关联
+## 4. 辛普森悖论
 # 第六章 概率
+
 # 第七章 假设与推理
 # 第八章 梯度下降
 # 第九章 获取数据
