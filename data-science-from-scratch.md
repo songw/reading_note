@@ -776,7 +776,12 @@ def function_name(required_argument, optional_argument=default_value,...):
 
 ## 3. 怎样进行数据可视化？
 ### 3.1 数据可视化的原则
-
++ 展示数据
+	+ 
++ 减少杂乱
++ 图文结合
++ 避免意大利面条式的图表
++ 从灰色开始
 
 
 数据可视化有两个主要用途：
