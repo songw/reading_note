@@ -1,16 +1,39 @@
 #data-science/tutorial/chapter2  
 # 第二章 Python 介绍
-所有编程语言的目的都是为了更方便地使用计算机来组织数据和处理数据，当然 Python 也不例外，瑞士计算机科学家**尼古拉斯·沃斯**(**Niklaus Wirth**)曾经说过，数据结构 + 算法 = 程序。其中，数据结构便是指如何组织数据，算法指的是如何处理数据。
+所有编程语言的目的都是为了更方便地使用计算机来组织数据和处理数据，当然 Python 也不例外，瑞士计算机科学家尼古拉斯·沃斯(Niklaus Wirth)曾经说过，数据结构 + 算法 = 程序。其中，数据结构便是指如何组织数据，算法指的是如何处理数据。
 
 ## 1. 数据的来源
 + 内存。
 存储在内存中的数据通常通过变量来访问，变量可以看成是存储值的容器，在 Python 中没有声明变量的命令，当为一个变量赋值时便创建了一个变量。
+```python
+a = 10
+print(a)
+
+b = 10.11
+print(b)
+```
 + 硬盘。
 通过文件读入数据。
+```python
+with open('test.txt') as f:
+    lines = f.readlines()
+    for line in lines:
+        print(line)
+```
 + 终端输入。
 通过终端读入数据。
+```python
+name = input("please input your name: ")
+print(name)
+```
 +  网络。
 通过网络获取数据。
+```python
+import requests
+
+r = requests.get('https://www.baidu.com/robots.txt')
+print(r.text)
+```
 ## 2. 数据的类型
 + 数值类型
 	+ 整数
