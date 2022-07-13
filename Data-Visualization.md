@@ -20,3 +20,4 @@ In this module, you will pull the concepts from the previous modules together to
 In this final module, you will examine several advanced chart types and a data story style called a dashboard. As someone who handles data, you will be responsible for using the most appropriate data visualization tool for any job at hand, and the advanced topics presented in this module will help you create high-impact reports.
 
 [Why is Data Visualization Important? What is Important in Data Visualization?](https://hdsr.mitpress.mit.edu/pub/zok97i7p/release/4)
+ 
